@@ -19,7 +19,7 @@ Frontend: Razor Views, Bootstrap 5, DataTables, jQuery
 
 ⚙️ Setup Instructions
 1️⃣ Clone the repository
-git clone https://github.com/yourusername/HouseBrokerAPP.git
+https://github.com/nandkishor-chauhan/ASP.NET.ASSIGNMENT.git
 
 2️⃣ Configure Database
 Database Setup (DatabaseSetup.md)
