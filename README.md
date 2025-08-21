@@ -22,6 +22,9 @@ Frontend: Razor Views, Bootstrap 5, DataTables, jQuery
 git clone https://github.com/yourusername/HouseBrokerAPP.git
 
 2️⃣ Configure Database
+Database Setup (DatabaseSetup.md)
+
+
 Update your appsettings.json:
 
 "ConnectionStrings": {
