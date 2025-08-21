@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     $.ajax({
-        url: '/HouseBroker/Home/Get',
+        url: '/HouseBroker/Home/GetCreateData',
         type: 'GET',
         success: function (response) {
             if (response.success) {
@@ -82,16 +82,16 @@ function renderCards(properties) {
 
             <div class="card-footer bg-light border-0 d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img src="/images/brokers/broker1.jpg"
+                    <img src="/images/profile.png"
                         class="rounded-circle me-2"
                         style="width:45px;height:45px;object-fit:cover;border:2px solid #0d6efd;">
                         <div>
-                            <p class="mb-0 fw-bold">John Doe</p>
-                            <small class="text-muted">+1 234 567 890</small>
+                            <p class="mb-0 fw-bold">${p.brokerName}</p>
+                            <small class="text-muted">${p.brokerPhone}</small>
                         </div>
                 </div>
-                <a href="mailto:johndoe@example.com" class="btn btn-sm btn-outline-primary">
-                    Contact
+                <a href="${p.brokerEmail}" class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-envelope"></i>
                 </a>
             </div>
         </div>

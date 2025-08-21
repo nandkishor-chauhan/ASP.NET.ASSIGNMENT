@@ -40,6 +40,25 @@ function loadDataTable() {
 
     });
 }
+
+function editProperty(id) {
+    $.ajax({
+        url: `/HouseBroker/Property/GetById/${id}`,
+        type: 'GET',
+        success: function (response) {
+            if (response.success) {
+                window.location.href = '/HouseBroker/Property/Create';
+            } else {
+                alert('Error: ' + response.error);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
 function Delete(url) {
     Swal.fire({
         title: "Are you sure?",

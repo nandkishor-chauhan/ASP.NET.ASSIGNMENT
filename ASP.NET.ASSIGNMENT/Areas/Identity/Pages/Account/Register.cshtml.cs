@@ -104,7 +104,7 @@ namespace ASP.NET.ASSIGNMENT.Areas.Identity.Pages.Account
 
             [Required]
             public string Name { get; set; }
-            public string StreetAddress { get; set; }
+            public string Street { get; set; }
 
             [Required]
             public string City { get; set; }

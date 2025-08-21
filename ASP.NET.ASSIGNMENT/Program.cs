@@ -1,3 +1,4 @@
+using ASP.NET.ASSIGNMENT.Models;
 using ASP.NET.HouseBrokerAPP.DAL;
 using ASP.NET.HouseBrokerAPP.IServices;
 using ASP.NET.HouseBrokerAPP.Models;
@@ -16,7 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDbConnection")));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -30,6 +31,8 @@ builder.Services.AddHttpContextAccessor();
 
 //adding Ragepage services
 builder.Services.AddRazorPages();
+
+//builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();

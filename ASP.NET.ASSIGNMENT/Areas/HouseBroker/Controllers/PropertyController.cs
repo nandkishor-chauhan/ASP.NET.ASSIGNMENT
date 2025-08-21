@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
 {
@@ -39,9 +41,25 @@ namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult Create(Guid? id)
         {
-            return View();
+            var propertyTypes = new List<string> { "Apartment", "Villa", "House", "Office" };
+            ViewBag.PropertyTypes = propertyTypes;
+
+            if (id == null || id == Guid.Empty)
+            {
+                return View();
+            }
+
+            var existingProperty = _unitOfWork.PropertyRepository.Get(x => x.Id == id).FirstOrDefault();
+
+            if (existingProperty == null)
+            {
+                return NotFound();
+            }
+
+            return View(existingProperty);
+
         }
 
 
@@ -74,22 +92,43 @@ namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
                 viewModel.ImageUrl = @"\images\property\" + fileName;
             }
 
-            var property = new Property
+            if (viewModel.Id == Guid.Empty)
             {
-                Id = Guid.NewGuid(),
-                PropertyType = viewModel.PropertyType,
-                Description = viewModel.Description,
-                Price = viewModel.Price,
-                Location = viewModel.Location,
-                ImageUrl = viewModel.ImageUrl,
-                Features = viewModel.Features,
-            };
-            TempData["success"] = "Propert created successfully";
+                var property = new Property
+                {
+                    Id = Guid.NewGuid(),
+                    PropertyType = viewModel.PropertyType,
+                    Description = viewModel.Description,
+                    Price = viewModel.Price,
+                    Location = viewModel.Location,
+                    ImageUrl = viewModel.ImageUrl,
+                    Features = viewModel.Features,
+                };
+                TempData["success"] = "Property created successfully";
+                await _propertyService.Create(property);
+            }
+            else
+            {
+                var existingProperty = _unitOfWork.PropertyRepository.Get(x => x.Id == viewModel.Id).FirstOrDefault();
+                if (existingProperty != null)
+                {
+                    existingProperty.PropertyType = viewModel.PropertyType;
+                    existingProperty.Description = viewModel.Description;
+                    existingProperty.Price = viewModel.Price;
+                    existingProperty.Location = viewModel.Location;
+                    existingProperty.Features = viewModel.Features;
 
-            await _propertyService.Create(property);
+                    if (viewModel.ImageUrl != null)
+                    {
+                        existingProperty.ImageUrl = viewModel.ImageUrl;
+                    }
 
+                    await _propertyService.Edit(existingProperty);
+                }
+            }
             return RedirectToAction("Index");
         }
+
 
 
         #region API CALLS
@@ -107,6 +146,66 @@ namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
             }
         }
 
-        #endregion
+        [HttpGet]
+        public async Task<ActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var existingProperty = await _unitOfWork.PropertyRepository.GetByIdAsync(id);
+
+                var property = new
+                {
+                    existingProperty?.Id,
+                    existingProperty?.PropertyType,
+                    existingProperty?.Description,
+                    existingProperty?.Price,
+                    existingProperty?.Location,
+                    existingProperty?.ImageUrl,
+                    existingProperty?.Features
+                };
+                return Json(new { success = true, data = property });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var existingProperty = await _unitOfWork.PropertyRepository.GetByIdAsync(id);
+            if (existingProperty == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            //delete oldImage
+            if (!string.IsNullOrEmpty(existingProperty.ImageUrl))
+            {
+                var oldImagePath = Path.Combine(
+                    _webHostEnvironment.WebRootPath,
+                    existingProperty.ImageUrl.TrimStart('\\')
+                );
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            _unitOfWork.PropertyRepository.Delete(existingProperty);
+            _unitOfWork.Save();
+
+            return Json(new
+            {
+                success = true,
+                message = "Product Delete Successful"
+            });
+
+    }
+
+#endregion
     }
 }

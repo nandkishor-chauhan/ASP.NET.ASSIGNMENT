@@ -14,8 +14,8 @@ namespace ASP.NET.HouseBrokerAPP.Services
     public class PropertyService : IPropertyService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public PropertyService(UserManager<ApplicationUser> userManager,IUnitOfWork unitOfWork)
+        private readonly UserManager<IdentityUser> _userManager;
+        public PropertyService(UserManager<IdentityUser> userManager,IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
@@ -58,7 +58,7 @@ namespace ASP.NET.HouseBrokerAPP.Services
         {
             var result = await (from p in _unitOfWork.PropertyRepository.Get()
                                 join u in _userManager.Users
-                                on p.UserId equals u.Id
+                                on p.UserId equals u.UserName
                                 select new
                                 {
                                     p.Id,
@@ -68,18 +68,20 @@ namespace ASP.NET.HouseBrokerAPP.Services
                                     p.Features,
                                     p.Description,
                                     p.ImageUrl,
-                                    //BrokerName = u.Name,
+                                    BrokerName = u.UserName,
                                     BrokerEmail = u.Email,
                                     BrokerPhone = u.PhoneNumber,
-                                  //  BrokerCity = u.City,
+                                  //BrokerCity = u.City,
                                    // BrokerStreet = u.Street
                                 }).ToListAsync();
             return result;
         }
 
-        public Task<Property> GetById(Guid id)
+        public async Task<Property> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var property = await _unitOfWork.PropertyRepository.GetByIdAsync(id);
+
+            return property is null ? throw new KeyNotFoundException("Category with ID not found.") : property;
         }
 
         
@@ -94,9 +96,10 @@ namespace ASP.NET.HouseBrokerAPP.Services
             return entity;
         }
 
-        public Task<Property> Edit(Property entity)
+        public async Task<Property> Edit(Property entity)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.SaveAsync();
+            return entity;
         }
 
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ASP.NET.HouseBrokerAPP.DAL
 {
-    public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDBContext : IdentityDbContext
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {

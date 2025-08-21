@@ -19,11 +19,12 @@ namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
         }
 
         #region API CALLS
-        public async Task<JsonResult> Get()
+        public async Task<JsonResult> GetCreateData()
         {
             try
             {
-                var propertyList = await _propertyService.Get();
+                var propertyList = await _propertyService.GetAvailablePropertyList();
+
                 return Json(new { success = true, data = propertyList });
             }
             catch (Exception ex)
@@ -31,6 +32,7 @@ namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
                 return Json(new { success = false, error = ex.Message });
             }
         }
+
         #endregion
     }
 }
