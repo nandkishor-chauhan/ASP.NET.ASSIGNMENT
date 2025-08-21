@@ -8,6 +8,12 @@ namespace ASP.NET.HouseBrokerAPP.DAL
         void Save();
         Task SaveAsync();
 
-        IRepository<Property> CategoryRepository { get; }
+        IRepository<Property> PropertyRepository { get; }
+
+        
+        
+        // Add these methods to get current user
+        string? GetCurrentUserName();
+        string? GetCurrentUserId();
     }
 }

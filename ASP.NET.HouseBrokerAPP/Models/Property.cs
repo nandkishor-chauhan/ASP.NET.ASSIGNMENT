@@ -8,7 +8,8 @@
         public decimal Price { get; set; }
         public string Features { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        public Guid BrokerId { get; set; }
+        public string ?ImageUrl { get; set; }
+        public string UserId { get; set; }
+        public Guid ?BrokerId { get; set; }
     }
 }
