@@ -22,7 +22,8 @@ Frontend: Razor Views, Bootstrap 5, DataTables, jQuery
 https://github.com/nandkishor-chauhan/ASP.NET.ASSIGNMENT.git
 
 2️⃣ Configure Database
-Database Setup (DatabaseSetup.md)
+Open Database Folder from the main Project and then Restore the Database.
+Database Setup (ASP_HOUSE_BROKER.md)
 
 
 Update your appsettings.json:
