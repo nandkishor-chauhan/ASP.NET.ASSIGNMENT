@@ -14,7 +14,7 @@
     </div>
 
     <div class="content-body">
-        <table class="table table-bordered table-condensed">
+        <table id="tableData" class="table table-bordered table-condensed">
             <thead class="custom-head">
                 <tr>
                     <th>SN.</th>
@@ -27,8 +27,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-            <tbody>
+         @*    <tbody>
                 @foreach (var item in Model.Select((value, index) => new { value, index }))
                 {
                     <tr>
@@ -54,7 +53,12 @@
                         </td>
                     </tr>
                 }
-            </tbody>
+            </tbody> *@
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/PropertyController.js"></script>
+}
+

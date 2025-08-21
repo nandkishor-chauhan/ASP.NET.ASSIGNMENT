@@ -1,5 +1,6 @@
 using ASP.NET.HouseBrokerAPP.DAL;
 using ASP.NET.HouseBrokerAPP.IServices;
+using ASP.NET.HouseBrokerAPP.Models;
 using ASP.NET.HouseBrokerAPP.Services;
 using ASP.NET.Utilities;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +16,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDbConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>

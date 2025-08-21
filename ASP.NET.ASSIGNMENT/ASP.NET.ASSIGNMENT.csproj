@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\PropertyController.js" />
+    <Content Remove="wwwroot\js\PropertyViewController.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
@@ -25,6 +30,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\property\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\PropertyViewController.js" />
+    <None Include="wwwroot\js\PropertyController.js" />
   </ItemGroup>
 
 </Project>

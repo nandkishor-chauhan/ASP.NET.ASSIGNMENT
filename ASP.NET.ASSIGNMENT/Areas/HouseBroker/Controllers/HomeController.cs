@@ -1,15 +1,36 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ASP.NET.HouseBrokerAPP.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET.ASSIGNMENT.Areas.HouseBroker.Controllers
 {
+    [Area("HouseBroker")]
+    [Authorize]
     public class HomeController : Controller
     {
-        [Area("HouseBroker")]
-        [Authorize]
+        private readonly IPropertyService _propertyService;
+        public HomeController(IPropertyService propertyService)
+        {
+            _propertyService = propertyService;
+        }
         public IActionResult Index()
         {
             return View();
         }
+
+        #region API CALLS
+        public async Task<JsonResult> Get()
+        {
+            try
+            {
+                var propertyList = await _propertyService.Get();
+                return Json(new { success = true, data = propertyList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        #endregion
     }
 }

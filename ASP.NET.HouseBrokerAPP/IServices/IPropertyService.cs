@@ -11,7 +11,7 @@ namespace ASP.NET.HouseBrokerAPP.IServices
     {
         Task<object> GetCreateData();
         Task<object> Get();
-        Task<IEnumerable<object>> GetCategoryNameList();
+        Task<IEnumerable<object>> GetAvailablePropertyList();
         Task<Property> GetById(Guid id);
         Task<Property> Create(Property entity);
         Task<Property> Edit(Property entity);
